@@ -1,0 +1,12 @@
+name: New Client Notification
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      
+name: Run simple notification
+      run: echo "NEW CLIENT CREATED. Notification executed successfully."

@@ -1,0 +1,12 @@
+name: Client Query Notification
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      
+name: Run simple notification
+      run: echo "CLIENT QUERY. Notification executed successfully."

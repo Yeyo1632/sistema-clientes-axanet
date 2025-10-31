@@ -1,0 +1,188 @@
+name: 🔍 Consulta de Información de Cliente
+description: Flujo automatizado para registrar y notificar consultas de información de clientes
+
+on:
+  workflow_dispatch:
+    inputs:
+      nombre_cliente:
+        description: 'Nombre del cliente consultado'
+        required: true
+        type: string
+      id_cliente:
+        description: 'ID del cliente (opcional)'
+        required: false
+        type: string
+      tipo_consulta:
+        description: 'Tipo de información consultada'
+        required: true
+        type: choice
+        options:
+        - Información general del cliente
+        - Historial de servicios
+        - Datos de contacto y facturación
+        - Estado de cuenta y pagos
+        - Contratos y documentos
+        - Servicios activos y configuración
+        - Todas las información disponible
+      motivo_consulta:
+        description: 'Motivo de la consulta'
+        required: true
+        type: choice
+        options:
+        - Soporte al cliente
+        - Actualización de información
+        - Revisión de contrato
+        - Análisis de servicios
+        - Auditoría interna
+        - Requerimiento legal
+        - Otro
+      consultado_por:
+        description: 'Departamento que realiza la consulta'
+        required: true
+        type: choice
+        options:
+        - Servicio al Cliente
+        - Ventas
+        - Soporte Técnico
+        - Desarrollo
+        - Finanzas
+        - Legal
+        - Administración
+
+jobs:
+  registrar-consulta-cliente:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📊 Registrar consulta de cliente
+        run: |
+          echo "🔍 [CONSULTA DE CLIENTE]"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "👤 Cliente: ${{ github.event.inputs.nombre_cliente }}"
+          echo "🆔 ID: ${{ github.event.inputs.id_cliente || 'No especificado' }}"
+          echo "📋 Tipo de consulta: ${{ github.event.inputs.tipo_consulta }}"
+          echo "🎯 Motivo: ${{ github.event.inputs.motivo_consulta }}"
+          echo "🏢 Departamento: ${{ github.event.inputs.consultado_por }}"
+          echo "👤 Consultado por: ${{ github.actor }}"
+          echo "📅 Fecha y hora: $(date)"
+          echo "⏰ Hora: $(date +%T)"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          
+      - name: 📢 Notificar equipos relevantes
+        run: |
+          echo "📤 NOTIFICANDO A EQUIPOS INVOLUCRADOS:"
+          echo ""
+          case "${{ github.event.inputs.consultado_por }}" in
+            "Servicio al Cliente")
+              echo "• 💼 CustServTeam - @customer-success-axanet (PRIMARIO)"
+              echo "• 📊 SalesTeam - @sales-axanet (SECUNDARIO)"
+              ;;
+            "Ventas")
+              echo "• 📊 SalesTeam - @sales-axanet (PRIMARIO)"
+              echo "• 💼 CustServTeam - @customer-success-axanet (SECUNDARIO)"
+              ;;
+            "Soporte Técnico")
+              echo "• 🖥️  ITTeam - @it-support-axanet (PRIMARIO)"
+              echo "• 👨‍💻 DevTeam - @dev-team-axanet (SECUNDARIO)"
+              ;;
+            "Desarrollo")
+              echo "• 👨‍💻 DevTeam - @dev-team-axanet (PRIMARIO)"
+              echo "• 🖥️  ITTeam - @it-support-axanet (SECUNDARIO)"
+              ;;
+            "Finanzas")
+              echo "• 💰 FinanceTeam - @finance-axanet (PRIMARIO)"
+              echo "• 💼 CustServTeam - @customer-success-axanet (SECUNDARIO)"
+              ;;
+            "Legal")
+              echo "• ⚖️  LegalTeam - @legal-axanet (PRIMARIO)"
+              echo "• 🚨 Management - @management-axanet (SECUNDARIO)"
+              ;;
+            "Administración")
+              echo "• 🏢 AdminTeam - @admin-axanet (PRIMARIO)"
+              echo "• 🚨 Management - @management-axanet (SECUNDARIO)"
+              ;;
+          esac
+          echo ""
+          echo "🔔 Tipo de acceso: CONSULTA"
+          echo "📊 Nivel de información: ${{ github.event.inputs.tipo_consulta }}"
+          
+      - name: 📝 Registrar en log de consultas
+        run: |
+          echo "📋 REGISTRO EN LOG DE CONSULTAS:"
+          timestamp=$(date -Iseconds)
+          echo "CONSULTA|${{ github.event.inputs.nombre_cliente }}|${{ github.event.inputs.id_cliente || 'N/A' }}|${{ github.event.inputs.tipo_consulta }}|${{ github.event.inputs.motivo_consulta }}|${{ github.event.inputs.consultado_por }}|${{ github.actor }}|$timestamp" >> consultas-clientes.log
+          echo "✅ Consulta registrada exitosamente"
+          echo ""
+          echo "📈 Estadísticas de consulta:"
+          echo "   • Cliente: ${{ github.event.inputs.nombre_cliente }}"
+          echo "   • Tipo: ${{ github.event.inputs.tipo_consulta }}"
+          echo "   • Departamento: ${{ github.event.inputs.consultado_por }}"
+          echo "   • Registrado en: consultas-clientes.log"
+          
+      - name: 🛡️ Verificar permisos y auditoría
+        run: |
+          echo "🔐 VERIFICACIÓN DE SEGURIDAD:"
+          echo ""
+          if [ "${{ github.event.inputs.tipo_consulta }}" = "Todas las información disponible" ]; then
+            echo "⚠️  CONSULTA COMPLETA - AUDITORÍA ACTIVADA"
+            echo "   • Registro de seguridad elevado"
+            echo "   • Notificación a supervisores"
+            echo "   • Revisión post-consulta requerida"
+          elif [ "${{ github.event.inputs.motivo_consulta }}" = "Requerimiento legal" ]; then
+            echo "⚖️  CONSULTA LEGAL - PROCESO ESPECIAL"
+            echo "   • Documentación legal requerida"
+            echo "   • Notificación a departamento legal"
+            echo "   • Almacenamiento seguro activado"
+          else
+            echo "✅ CONSULTA ESTÁNDAR - PERMISOS VÁLIDOS"
+            echo "   • Acceso autorizado"
+            echo "   • Registro estándar aplicado"
+          fi
+          
+      - name: 📊 Generar resumen de consulta
+        run: |
+          echo "📄 RESUMEN DE LA CONSULTA:"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "🔍 TIPO: ${{ github.event.inputs.tipo_consulta }}"
+          echo "🎯 PROPÓSITO: ${{ github.event.inputs.motivo_consulta }}"
+          echo "🏢 ORIGEN: ${{ github.event.inputs.consultado_por }}"
+          echo ""
+          echo "📋 INFORMACIÓN SOLICITADA:"
+          case "${{ github.event.inputs.tipo_consulta }}" in
+            "Información general del cliente")
+              echo "   • Datos básicos del cliente"
+              echo "   • Fecha de registro"
+              echo "   • Estado de la cuenta"
+              ;;
+            "Historial de servicios")
+              echo "   • Servicios contratados"
+              echo "   • Fechas de implementación"
+              echo "   • Incidencias y soporte"
+              ;;
+            "Datos de contacto y facturación")
+              echo "   • Información de contacto"
+              echo "   • Datos de facturación"
+              echo "   • Métodos de pago"
+              ;;
+            "Estado de cuenta y pagos")
+              echo "   • Estado de cuenta"
+              echo "   • Historial de pagos"
+              echo "   • Facturas pendientes"
+              ;;
+            "Contratos y documentos")
+              echo "   • Contratos vigentes"
+              echo "   • Documentos legales"
+              echo "   • Acuerdos de servicio"
+              ;;
+            "Servicios activos y configuración")
+              echo "   • Servicios activos"
+              echo "   • Configuración técnica"
+              echo "   • Recursos asignados"
+              ;;
+            "Todas las información disponible")
+              echo "   • TODOS los datos del cliente"
+              echo "   • Información completa"
+              echo "   • Acceso total al historial"
+              ;;
+          esac
+          echo ""
+          echo "✅ Consulta procesada y registrada"

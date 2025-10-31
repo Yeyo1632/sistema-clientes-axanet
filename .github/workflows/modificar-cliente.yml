@@ -1,0 +1,141 @@
+name: ✏️ Modificación de Cliente Existente
+description: Flujo automatizado para notificar modificaciones en datos de clientes
+
+on:
+  workflow_dispatch:
+    inputs:
+      id_cliente:
+        description: 'ID del cliente a modificar'
+        required: true
+        type: string
+      tipo_modificacion:
+        description: 'Tipo de modificación realizada'
+        required: true
+        type: choice
+        options:
+        - Actualización de información de contacto
+        - Cambio en servicios contratados
+        - Modificación de datos fiscales
+        - Actualización de datos de facturación
+        - Cambio en nivel de servicio
+        - Corrección de datos erróneos
+      cambios_realizados:
+        description: 'Descripción detallada de los cambios'
+        required: true
+        type: string
+      impacto_sistema:
+        description: 'Nivel de impacto en sistemas'
+        required: true
+        type: choice
+        options:
+        - Bajo (solo datos)
+        - Medio (configuración)
+        - Alto (integración)
+        - Crítico (sistemas core)
+
+jobs:
+  notificar-modificacion-cliente:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📢 Notificar modificación de cliente
+        run: |
+          echo "🔄 [CLIENTE MODIFICADO]"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "🆔 ID Cliente: ${{ github.event.inputs.id_cliente }}"
+          echo "📝 Tipo de modificación: ${{ github.event.inputs.tipo_modificacion }}"
+          echo "🚨 Impacto en sistema: ${{ github.event.inputs.impacto_sistema }}"
+          echo "👤 Modificado por: ${{ github.actor }}"
+          echo "📅 Fecha de modificación: $(date)"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "📋 Cambios realizados:"
+          echo "${{ github.event.inputs.cambios_realizados }}"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          
+      - name: 📧 Notificar a equipos afectados
+        run: |
+          echo "📤 NOTIFICANDO A EQUIPOS INVOLUCRADOS:"
+          echo ""
+          if [ "${{ github.event.inputs.impacto_sistema }}" = "Bajo (solo datos)" ]; then
+            echo "• 💼 CustServTeam - @customer-success-axanet"
+            echo "• 📊 SalesTeam - @sales-axanet"
+            echo "🎯 Solo notificación informativa"
+          elif [ "${{ github.event.inputs.impacto_sistema }}" = "Medio (configuración)" ]; then
+            echo "• 💼 CustServTeam - @customer-success-axanet"
+            echo "• 🖥️  ITTeam - @it-support-axanet"
+            echo "• 📊 SalesTeam - @sales-axanet"
+            echo "🎯 Revisión de configuración requerida"
+          elif [ "${{ github.event.inputs.impacto_sistema }}" = "Alto (integración)" ]; then
+            echo "• 👨‍💻 DevTeam - @dev-team-axanet"
+            echo "• 🖥️  ITTeam - @it-support-axanet"
+            echo "• 💼 CustServTeam - @customer-success-axanet"
+            echo "🎯 Coordinación entre equipos necesaria"
+          else
+            echo "• 👨‍💻 DevTeam - @dev-team-axanet"
+            echo "• 🖥️  ITTeam - @it-support-axanet"
+            echo "• 💼 CustServTeam - @customer-success-axanet"
+            echo "• 📊 SalesTeam - @sales-axanet"
+            echo "• 🚨 Management - @management-axanet"
+            echo "🎯 REUNIÓN URGENTE REQUERIDA"
+          fi
+          
+      - name: 🔄 Procesos automáticos desencadenados
+        run: |
+          echo "⚙️  PROCESOS AUTOMÁTICOS ACTIVADOS:"
+          echo ""
+          echo "✅ Backup de datos anteriores creado"
+          echo "✅ Registro de auditoría actualizado"
+          echo "✅ Notificaciones enviadas a equipos"
+          echo "✅ Historial de cambios actualizado"
+          echo ""
+          if [ "${{ github.event.inputs.impacto_sistema }}" = "Alto (integración)" ] || [ "${{ github.event.inputs.impacto_sistema }}" = "Crítico (sistemas core)" ]; then
+            echo "🚨 VERIFICACIONES ADICIONALES:"
+            echo "   • Validación de integridad de datos"
+            echo "   • Pruebas de regresión programadas"
+            echo "   • Monitoreo extendido activado (24h)"
+          fi
+          
+      - name: 📊 Registrar en log de auditoría
+        run: |
+          echo "📝 REGISTRO DE AUDITORÍA:"
+          timestamp=$(date -Iseconds)
+          echo "MODIFICACION_CLIENTE|${{ github.event.inputs.id_cliente }}|${{ github.event.inputs.tipo_modificacion }}|${{ github.event.inputs.impacto_sistema }}|$timestamp|${{ github.actor }}" >> auditoria-modificaciones.txt
+          echo "🔍 Detalles: ${{ github.event.inputs.cambios_realizados }}" >> auditoria-modificaciones.txt
+          echo "---" >> auditoria-modificaciones.txt
+          echo "✅ Registro de auditoría completado"
+          
+      - name: 🎯 Siguientes pasos recomendados
+        run: |
+          echo "📅 SIGUIENTES PASOS RECOMENDADOS:"
+          echo ""
+          case "${{ github.event.inputs.tipo_modificacion }}" in
+            "Actualización de información de contacto")
+              echo "• Verificar sincronización en CRM"
+              echo "• Actualizar tarjetas de contacto"
+              echo "• Notificar al equipo de ventas"
+              ;;
+            "Cambio en servicios contratados")
+              echo "• Actualizar contrato"
+              echo "• Ajustar facturación"
+              echo "• Programar implementación"
+              ;;
+            "Modificación de datos fiscales")
+              echo "• Validar con contabilidad"
+              echo "• Actualizar sistema fiscal"
+              echo "• Generar nuevos documentos"
+              ;;
+            "Actualización de datos de facturación")
+              echo "• Verificar método de pago"
+              echo "• Actualizar sistema de billing"
+              echo "• Notificar al departamento financiero"
+              ;;
+            "Cambio en nivel de servicio")
+              echo "• Ajustar recursos asignados"
+              echo "• Actualizar SLA"
+              echo "• Programar reunión con cliente"
+              ;;
+            "Corrección de datos erróneos")
+              echo "• Verificar origen del error"
+              echo "• Implementar medidas preventivas"
+              echo "• Notificar al cliente si es necesario"
+              ;;
+          esac

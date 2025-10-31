@@ -1,0 +1,75 @@
+name: 🆕 Creación de Nuevo Cliente
+description: Flujo automatizado para notificar la creación de nuevos clientes
+
+on:
+  workflow_dispatch:
+    inputs:
+      nombre_cliente:
+        description: 'Nombre del nuevo cliente'
+        required: true
+        type: string
+      tipo_servicio:
+        description: 'Tipo de servicio contratado'
+        required: true
+        type: choice
+        options:
+        - Consultoría TI
+        - Desarrollo Software
+        - Soporte Técnico
+        - Seguridad Informática
+        - Infraestructura Cloud
+      prioridad:
+        description: 'Nivel de prioridad'
+        required: true
+        type: choice
+        options:
+        - Baja
+        - Media
+        - Alta
+        - Crítica
+
+jobs:
+  notificar-nuevo-cliente:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📢 Notificar creación de nuevo cliente
+        run: |
+          echo "🎉 [NUEVO CLIENTE CREADO]"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "👤 Nombre: ${{ github.event.inputs.nombre_cliente }}"
+          echo "🛠️  Servicio: ${{ github.event.inputs.tipo_servicio }}"
+          echo "🚨 Prioridad: ${{ github.event.inputs.prioridad }}"
+          echo "📅 Fecha: $(date)"
+          echo "👥 Creado por: ${{ github.actor }}"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          
+      - name: 📧 Notificar a equipos
+        run: |
+          echo "📤 ENVIANDO NOTIFICACIONES A EQUIPOS:"
+          echo "• 👨‍💻 DevTeam - @dev-team-axanet"
+          echo "• 🖥️  ITTeam - @it-support-axanet" 
+          echo "• 💼 CustServTeam - @customer-success-axanet"
+          echo "• 📊 SalesTeam - @sales-axanet"
+          echo ""
+          echo "🔔 Acciones requeridas:"
+          echo "   - Configurar acceso a sistemas"
+          echo "   - Crear documentación inicial"
+          echo "   - Programar reunión de onboarding"
+          echo "   - Asignar recursos del proyecto"
+          
+      - name: 📋 Crear tareas automáticas
+        run: |
+          echo "✅ TAREAS AUTOMÁTICAS CREADAS:"
+          echo "   [ ] Crear carpeta del cliente en sistema"
+          echo "   [ ] Generar contrato y documentación"
+          echo "   [ ] Configurar accesos y permisos"
+          echo "   [ ] Programar reunión de kick-off"
+          echo "   [ ] Asignar equipo de proyecto"
+          echo ""
+          echo "⏰ Próximos pasos programados automáticamente"
+          
+      - name: 💾 Registrar en log del sistema
+        run: |
+          echo "📝 REGISTRO EN SISTEMA:"
+          echo "NUEVO_CLIENTE|${{ github.event.inputs.nombre_cliente }}|${{ github.event.inputs.tipo_servicio }}|${{ github.event.inputs.prioridad }}|$(date -Iseconds)|${{ github.actor }}" >> clientes-log.txt
+          echo "✅ Registro completado en clientes-log.txt"

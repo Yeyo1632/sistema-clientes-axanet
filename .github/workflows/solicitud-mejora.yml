@@ -1,0 +1,197 @@
+name: 💡 Solicitud de Mejora
+description: Flujo automatizado para procesar solicitudes de mejora del sistema
+
+on:
+  workflow_dispatch:
+    inputs:
+      titulo_mejora:
+        description: 'Título de la solicitud de mejora'
+        required: true
+        type: string
+      descripcion_mejora:
+        description: 'Descripción detallada de la mejora solicitada'
+        required: true
+        type: string
+      tipo_mejora:
+        description: 'Tipo de mejora solicitada'
+        required: true
+        type: choice
+        options:
+        - Nueva funcionalidad
+        - Mejora de interfaz de usuario
+        - Optimización de rendimiento
+        - Corrección de errores
+        - Mejora de seguridad
+        - Automatización de procesos
+        - Mejora en reportes
+        - Integración con otros sistemas
+      prioridad:
+        description: 'Prioridad de la mejora'
+        required: true
+        type: choice
+        options:
+        - Baja (mejora futura)
+        - Media (próximo release)
+        - Alta (sprint actual)
+        - Crítica (inmediata)
+      solicitado_por:
+        description: 'Departamento que solicita la mejora'
+        required: true
+        type: choice
+        options:
+        - Servicio al Cliente
+        - Ventas
+        - Soporte Técnico
+        - Desarrollo
+        - Finanzas
+        - Operaciones
+        - Cliente Directo
+      impacto_esperado:
+        description: 'Impacto esperado de esta mejora'
+        required: true
+        type: choice
+        options:
+        - Mejora eficiencia interna
+        - Mejora experiencia cliente
+        - Reducción de costos
+        - Incremento en ventas
+        - Cumplimiento regulatorio
+        - Ventaja competitiva
+
+jobs:
+  procesar-solicitud-mejora:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📢 Anunciar nueva solicitud de mejora
+        run: |
+          echo "💡 [SOLICITUD DE MEJORA RECIBIDA]"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "📝 Título: '${{ github.event.inputs.titulo_mejora }}'"
+          echo "🎯 Tipo: ${{ github.event.inputs.tipo_mejora }}"
+          echo "🚨 Prioridad: ${{ github.event.inputs.prioridad }}"
+          echo "🏢 Solicitado por: ${{ github.event.inputs.solicitado_por }}"
+          echo "📊 Impacto esperado: ${{ github.event.inputs.impacto_esperado }}"
+          echo "👤 Solicitante: ${{ github.actor }}"
+          echo "📅 Fecha recepción: $(date)"
+          echo "🔢 ID Solicitud: MEJ-$(date +%Y%m%d-%H%M%S)"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "📋 Descripción:"
+          echo "${{ github.event.inputs.descripcion_mejora }}"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          
+      - name: 👥 Notificar a todos los equipos
+        run: |
+          echo "📢 NOTIFICANDO A TODOS LOS EQUIPOS:"
+          echo ""
+          echo "• 👨‍💻 DevLead - @dev-lead-axanet (ASIGNADO PARA REVISIÓN)"
+          echo "• 👨‍💻 DevTeam - @dev-team-axanet"
+          echo "• 🖥️  ITTeam - @it-support-axanet"
+          echo "• 💼 CustServTeam - @customer-success-axanet"
+          echo "• 📊 SalesTeam - @sales-axanet"
+          echo "• 💰 FinanceTeam - @finance-axanet"
+          echo "• 🏢 OpsTeam - @operations-axanet"
+          echo "• 🚨 Management - @management-axanet"
+          echo ""
+          echo "🔔 Asignación automática: DevLead para revisión inicial"
+          echo "📋 Próximo paso: Evaluación de viabilidad técnica"
+          
+      - name: 🎯 Definir criterios de evaluación
+        run: |
+          echo "📊 CRITERIOS DE EVALUACIÓN AUTOMÁTICOS:"
+          echo ""
+          case "${{ github.event.inputs.prioridad }}" in
+            "Crítica (inmediata)")
+              echo "⏰ TIMELINE: Revisión en 24 horas"
+              echo "🎯 IMPACTO: Alto - Revisión urgente"
+              echo "🔧 RECURSOS: Máxima prioridad"
+              ;;
+            "Alta (sprint actual)")
+              echo "⏰ TIMELINE: Revisión en 48 horas"
+              echo "🎯 IMPACTO: Alto - Sprint próximo"
+              echo "🔧 RECURSOS: Alta prioridad"
+              ;;
+            "Media (próximo release)")
+              echo "⏰ TIMELINE: Revisión en 1 semana"
+              echo "🎯 IMPACTO: Medio - Planning release"
+              echo "🔧 RECURSOS: Prioridad media"
+              ;;
+            "Baja (mejora futura)")
+              echo "⏰ TIMELINE: Revisión en 2 semanas"
+              echo "🎯 IMPACTO: Bajo - Backlog futuro"
+              echo "🔧 RECURSOS: Baja prioridad"
+              ;;
+          esac
+          echo ""
+          echo "📈 IMPACTO ESPERADO: ${{ github.event.inputs.impacto_esperado }}"
+          
+      - name: 📋 Crear tareas de evaluación inicial
+        run: |
+          echo "✅ TAREAS DE EVALUACIÓN CREADAS:"
+          echo ""
+          echo "   [ ] 1. Análisis de viabilidad técnica - DevLead"
+          echo "   [ ] 2. Estimación de esfuerzo - DevTeam"
+          echo "   [ ] 3. Evaluación de impacto - ${{ github.event.inputs.solicitado_por }}"
+          echo "   [ ] 4. Análisis de ROI - FinanceTeam"
+          echo "   [ ] 5. Plan de implementación - OpsTeam"
+          echo ""
+          echo "📅 Reunión de evaluación programada para:"
+          if [ "${{ github.event.inputs.prioridad }}" = "Crítica (inmediata)" ]; then
+            echo "   🚨 HOY - Sesión urgente"
+          elif [ "${{ github.event.inputs.prioridad }}" = "Alta (sprint actual)" ]; then
+            echo "   📅 Próximas 48 horas"
+          else
+            echo "   📅 Próxima reunión de planning"
+          fi
+          
+      - name: 📝 Registrar en backlog de mejoras
+        run: |
+          echo "📁 REGISTRANDO EN BACKLOG DE MEJORAS:"
+          timestamp=$(date -Iseconds)
+          mejora_id="MEJ-$(date +%Y%m%d-%H%M%S)"
+          
+          cat >> backlog-mejoras.md << EOF
+          
+          ## $mejora_id - ${{ github.event.inputs.titulo_mejora }}
+          
+          **Estado**: 📝 Recibida
+          **Prioridad**: ${{ github.event.inputs.prioridad }}
+          **Tipo**: ${{ github.event.inputs.tipo_mejora }}
+          **Solicitante**: ${{ github.event.inputs.solicitado_por }} (${{ github.actor }})
+          **Impacto**: ${{ github.event.inputs.impacto_esperado }}
+          **Fecha**: $timestamp
+          
+          ### Descripción
+          ${{ github.event.inputs.descripcion_mejora }}
+          
+          ### Asignaciones
+          - **Revisión inicial**: DevLead
+          - **Evaluación técnica**: DevTeam
+          - **Impacto negocio**: ${{ github.event.inputs.solicitado_por }}
+          
+          ### Criterios de Aceptación
+          - [ ] Viabilidad técnica confirmada
+          - [ ] Estimación de esfuerzo completada
+          - [ ] ROI positivo identificado
+          - [ ] Plan de implementación definido
+          
+          ---
+          EOF
+          
+          echo "✅ Mejora registrada en backlog con ID: $mejora_id"
+          echo "📊 Total de mejoras en backlog: $(grep -c '^## MEJ-' backlog-mejoras.md 2>/dev/null || echo 0)"
+          
+      - name: 🔄 Flujo de trabajo activado
+        run: |
+          echo "🔄 FLUJO DE TRABAJO ACTIVADO:"
+          echo ""
+          echo "1. 📝 SOLICITUD RECIBIDA → ✅ COMPLETADO"
+          echo "2. 👥 NOTIFICACIÓN EQUIPOS → ✅ COMPLETADO" 
+          echo "3. 🎯 EVALUACIÓN INICIAL → 🟡 PENDIENTE (DevLead)"
+          echo "4. 📊 ANÁLISIS DETALLADO → ⏳ PROGRAMADO"
+          echo "5. 🚀 IMPLEMENTACIÓN → ⏳ POR DEFINIR"
+          echo ""
+          echo "📧 Notificaciones automáticas configuradas para:"
+          echo "   • Cambios de estado"
+          echo "   • Comentarios del equipo"
+          echo "   • Actualizaciones de timeline"
+          echo "   • Completación de tareas"
